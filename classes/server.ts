@@ -39,6 +39,8 @@ export default class Server {
       sockets.message(socket, this.io);
 
       sockets.disconnect(socket, this.io);
+
+      sockets.getGraphicData(socket, this.io);
     });
   }
 

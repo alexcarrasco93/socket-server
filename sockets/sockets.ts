@@ -2,6 +2,7 @@ import { Socket } from 'socket.io';
 import io from 'socket.io';
 import { UsersList } from '../classes/users-list';
 import { User } from '../classes/user';
+import { GraphicData } from '../classes/graphic-data';
 
 export const connectedUsers = new UsersList();
 
@@ -45,5 +46,13 @@ export const configureUser = (socket: Socket, io: io.Server) => {
 export const emitUsers = (socket: Socket, io: io.Server) => {
   socket.on('emit-users', () => {
     io.to(socket.id).emit('active-users', connectedUsers.getList());
+  });
+};
+
+export const getGraphicData = (socket: Socket, io: io.Server) => {
+  const graphic = GraphicData.instance;
+
+  socket.on('graphic-data', () => {
+    io.to(socket.id).emit('graphic-change', { data: graphic.getGraphicData() });
   });
 };

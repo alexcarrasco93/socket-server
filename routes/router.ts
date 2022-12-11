@@ -1,9 +1,30 @@
 import { Request, Response, Router } from 'express';
+import { GraphicData } from '../classes/graphic-data';
 import Server from '../classes/server';
 import { connectedUsers } from '../sockets/sockets';
 
 const router = Router();
 
+const graphic = GraphicData.instance;
+
+// GRAPHIC SOCKETS
+router.get('/graphic', (req: Request, res: Response) => {
+  res.json({ data: graphic.getGraphicData() });
+});
+
+router.post('/graphic', (req: Request, res: Response) => {
+  const month = req.body.month;
+  const value = Number(req.body.value);
+
+  graphic.changeValue(month, value);
+
+  const server = Server.instance;
+  server.io.emit('graphic-change', { data: graphic.getGraphicData() });
+
+  res.json({ data: graphic.getGraphicData() });
+});
+
+// BASIC CHAT SOCKETS
 router.get('/messages', (req: Request, res: Response) => {
   res.json({
     ok: true,
