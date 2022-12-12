@@ -41,6 +41,8 @@ export default class Server {
       sockets.disconnect(socket, this.io);
 
       sockets.getGraphicData(socket, this.io);
+
+      sockets.mapSockets(socket, this.io);
     });
   }
 

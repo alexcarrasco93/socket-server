@@ -1,11 +1,16 @@
 import { Request, Response, Router } from 'express';
 import { GraphicData } from '../classes/graphic-data';
 import Server from '../classes/server';
-import { connectedUsers } from '../sockets/sockets';
+import { connectedUsers, map } from '../sockets/sockets';
 
 const router = Router();
 
 const graphic = GraphicData.instance;
+
+// MAP
+router.get('/map', (req: Request, res: Response) => {
+  res.json(map.getMarkers());
+});
 
 // GRAPHIC SOCKETS
 router.get('/graphic', (req: Request, res: Response) => {
