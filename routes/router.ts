@@ -1,11 +1,30 @@
 import { Request, Response, Router } from 'express';
 import { GraphicData } from '../classes/graphic-data';
 import Server from '../classes/server';
-import { connectedUsers, map } from '../sockets/sockets';
+import { Ticket } from '../interfaces/ticket';
+import { connectedUsers, existingTickets, map } from '../sockets/sockets';
 
 const router = Router();
 
 const graphic = GraphicData.instance;
+
+// CUES
+router.get('/cues', (req: Request, res: Response) => {
+  res.json({
+    tickets: existingTickets.getTicketsToAttend(),
+  });
+});
+
+router.post('/cues', (req: Request, res: Response) => {
+  const ticket = req.body.ticket as Ticket;
+
+  existingTickets.addTicketToAttend();
+
+  const server = Server.instance;
+  server.io.emit('new-ticket', ticket);
+
+  res.json(ticket);
+});
 
 // MAP
 router.get('/map', (req: Request, res: Response) => {

@@ -5,9 +5,12 @@ import { User } from '../classes/user';
 import { GraphicData } from '../classes/graphic-data';
 import { Map } from '../classes/map';
 import { Marker } from '../interfaces/marker';
+import { TicketsList } from '../classes/tickets-list';
+import { Ticket } from '../interfaces/ticket';
 
 export const connectedUsers = new UsersList();
 export const map = new Map();
+export const existingTickets = new TicketsList();
 
 export const connectSocket = (socket: Socket, io: io.Server) => {
   const user = new User(socket.id);
@@ -78,4 +81,34 @@ export const mapSockets = (socket: Socket, io: io.Server) => {
 
     socket.broadcast.emit('move-marker', marker);
   });
+};
+
+export const cuesSockets = (socket: Socket, io: io.Server) => {
+  socket.on('new-ticket', () => {
+    existingTickets.addTicketToAttend();
+
+    io.emit('get-tickets-to-attend', existingTickets.getTicketsToAttend());
+  });
+
+  socket.on('get-tickets-to-attend', () => {
+    console.log('get-tickets-to-attend');
+    io.emit('get-tickets-to-attend', existingTickets.getTicketsToAttend());
+  });
+
+  socket.on('get-attending-tickets', () => {
+    io.emit('get-attending-tickets', existingTickets.getAttendigTickets());
+  });
+
+  socket.on(
+    'attend-ticket',
+    ({ ticket, attendedId }: { ticket: Ticket; attendedId?: number }) => {
+      if (attendedId) {
+        existingTickets.deleteAttendedTicket(attendedId);
+      }
+      existingTickets.attendTicket(ticket);
+
+      io.emit('get-tickets-to-attend', existingTickets.getTicketsToAttend());
+      io.emit('get-attending-tickets', existingTickets.getAttendigTickets());
+    }
+  );
 };

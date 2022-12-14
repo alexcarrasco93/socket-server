@@ -43,6 +43,8 @@ export default class Server {
       sockets.getGraphicData(socket, this.io);
 
       sockets.mapSockets(socket, this.io);
+
+      sockets.cuesSockets(socket, this.io);
     });
   }
 
