@@ -30,6 +30,8 @@ export class TicketsList {
   }
 
   public getAttendigTickets() {
+    const lastNumbersDesktops = this.controlDuplicatedDesktops();
+    this.attendingTickets = lastNumbersDesktops;
     return this.attendingTickets;
   }
 
@@ -59,5 +61,28 @@ export class TicketsList {
     );
 
     return ticketTemp;
+  }
+
+  private controlDuplicatedDesktops() {
+    const lastNumbersDesktops: Ticket[] = [];
+    this.attendingTickets.forEach((ticket) => {
+      let i: number;
+      const foundMatchingDesktop = lastNumbersDesktops.find((tick, index) => {
+        if (tick.desktop === ticket.desktop) {
+          i = index;
+          return true;
+        }
+        return false;
+      });
+      if (foundMatchingDesktop) {
+        if (foundMatchingDesktop.id < ticket.id) {
+          lastNumbersDesktops.splice(i!, 1);
+          lastNumbersDesktops.push(ticket);
+        }
+      } else {
+        lastNumbersDesktops.push(ticket);
+      }
+    });
+    return lastNumbersDesktops;
   }
 }
