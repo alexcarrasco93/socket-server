@@ -3,6 +3,7 @@ import router from './routes/router';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
+import path from 'path';
 
 const server = Server.instance;
 
@@ -18,6 +19,10 @@ server.app.use(express.static('public'));
 
 // Routes
 server.app.use('/', router);
+
+server.app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
 
 server.start((type: string) => {
   if (type === 'http') {
