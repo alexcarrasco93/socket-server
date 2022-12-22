@@ -15,6 +15,10 @@ server.app.use(cors({ origin: true, credentials: true }));
 // Routes
 server.app.use('/', router);
 
-server.start(() => {
-  console.log(`Server is running on port ${server.port}`);
+server.start((type: string) => {
+  if (type === 'http') {
+    console.log(`Server http is running on port ${server.portHttp}`);
+  } else {
+    console.log(`Server https is running on port ${server.portHttps}`);
+  }
 });
