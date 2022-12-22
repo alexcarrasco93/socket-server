@@ -20,6 +20,7 @@ server.app.use(express.static('public'));
 // Routes
 server.app.use('/', router);
 
+// Redirect SPA
 server.app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public/index.html'));
 });
