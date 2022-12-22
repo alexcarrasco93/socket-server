@@ -2,6 +2,7 @@ import Server from './classes/server';
 import router from './routes/router';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import express from 'express';
 
 const server = Server.instance;
 
@@ -11,6 +12,9 @@ server.app.use(bodyParser.json());
 
 // CORS
 server.app.use(cors({ origin: true, credentials: true }));
+
+// Public folder
+server.app.use(express.static('public'));
 
 // Routes
 server.app.use('/', router);
