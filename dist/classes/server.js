@@ -65,7 +65,7 @@ class Server {
     }
     start(callback) {
         this.httpServer.listen(this.portHttp, callback('http'));
-        // this.httpsServer.listen(this.portHttps, callback('https'));
+        this.httpsServer.listen(this.portHttps, callback('https'));
     }
 }
 exports.default = Server;
