@@ -19,12 +19,12 @@ const sockets_1 = require("../sockets/sockets");
 const router = (0, express_1.Router)();
 const graphic = graphic_data_1.GraphicData.instance;
 // CUES
-router.get('/cues', (req, res) => {
+router.get('/api/cues', (req, res) => {
     res.json({
         tickets: sockets_1.existingTickets.getTicketsToAttend(),
     });
 });
-router.post('/cues', (req, res) => {
+router.post('/api/cues', (req, res) => {
     const ticket = req.body.ticket;
     sockets_1.existingTickets.addTicketToAttend();
     const server = server_1.default.instance;
@@ -32,14 +32,14 @@ router.post('/cues', (req, res) => {
     res.json(ticket);
 });
 // MAP
-router.get('/map', (req, res) => {
+router.get('/api/map', (req, res) => {
     res.json(sockets_1.map.getMarkers());
 });
 // GRAPHIC SOCKETS
-router.get('/graphic', (req, res) => {
+router.get('/api/graphic', (req, res) => {
     res.json({ data: graphic.getGraphicData() });
 });
-router.post('/graphic', (req, res) => {
+router.post('/api/graphic', (req, res) => {
     const month = req.body.month;
     const value = Number(req.body.value);
     graphic.changeValue(month, value);
@@ -48,13 +48,13 @@ router.post('/graphic', (req, res) => {
     res.json({ data: graphic.getGraphicData() });
 });
 // BASIC CHAT SOCKETS
-router.get('/messages', (req, res) => {
+router.get('/api/messages', (req, res) => {
     res.json({
         ok: true,
         msg: 'GET ok',
     });
 });
-router.post('/messages', (req, res) => {
+router.post('/api/messages', (req, res) => {
     const msg = req.body.msg;
     const from = req.body.from;
     const payload = {
@@ -69,7 +69,7 @@ router.post('/messages', (req, res) => {
         from,
     });
 });
-router.post('/messages/:id', (req, res) => {
+router.post('/api/messages/:id', (req, res) => {
     const msg = req.body.msg;
     const from = req.body.from;
     const id = req.params.id;
@@ -86,7 +86,7 @@ router.post('/messages/:id', (req, res) => {
         id,
     });
 });
-router.get('/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/api/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const server = server_1.default.instance;
     try {
         const sockets = yield server.io.fetchSockets();
@@ -107,7 +107,7 @@ router.get('/users', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 }));
-router.get('/users/detail', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/api/users/detail', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({
         ok: true,
         users: sockets_1.connectedUsers.getList(),

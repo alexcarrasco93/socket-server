@@ -18,7 +18,7 @@ server.app.use((0, cors_1.default)({ origin: true, credentials: true }));
 // Public folder
 server.app.use(express_1.default.static('public'));
 // Routes
-server.app.use('/api', router_1.default);
+server.app.use('/', router_1.default);
 // Redirect SPA
 server.app.get('*', (req, res) => {
     res.sendFile(path_1.default.resolve(__dirname, 'public/index.html'));

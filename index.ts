@@ -18,7 +18,7 @@ server.app.use(cors({ origin: true, credentials: true }));
 server.app.use(express.static('public'));
 
 // Routes
-server.app.use('/api', router);
+server.app.use('/', router);
 
 // Redirect SPA
 server.app.get('*', (req, res) => {

@@ -9,13 +9,13 @@ const router = Router();
 const graphic = GraphicData.instance;
 
 // CUES
-router.get('/cues', (req: Request, res: Response) => {
+router.get('/api/cues', (req: Request, res: Response) => {
   res.json({
     tickets: existingTickets.getTicketsToAttend(),
   });
 });
 
-router.post('/cues', (req: Request, res: Response) => {
+router.post('/api/cues', (req: Request, res: Response) => {
   const ticket = req.body.ticket as Ticket;
 
   existingTickets.addTicketToAttend();
@@ -27,16 +27,16 @@ router.post('/cues', (req: Request, res: Response) => {
 });
 
 // MAP
-router.get('/map', (req: Request, res: Response) => {
+router.get('/api/map', (req: Request, res: Response) => {
   res.json(map.getMarkers());
 });
 
 // GRAPHIC SOCKETS
-router.get('/graphic', (req: Request, res: Response) => {
+router.get('/api/graphic', (req: Request, res: Response) => {
   res.json({ data: graphic.getGraphicData() });
 });
 
-router.post('/graphic', (req: Request, res: Response) => {
+router.post('/api/graphic', (req: Request, res: Response) => {
   const month = req.body.month;
   const value = Number(req.body.value);
 
@@ -49,14 +49,14 @@ router.post('/graphic', (req: Request, res: Response) => {
 });
 
 // BASIC CHAT SOCKETS
-router.get('/messages', (req: Request, res: Response) => {
+router.get('/api/messages', (req: Request, res: Response) => {
   res.json({
     ok: true,
     msg: 'GET ok',
   });
 });
 
-router.post('/messages', (req: Request, res: Response) => {
+router.post('/api/messages', (req: Request, res: Response) => {
   const msg = req.body.msg;
   const from = req.body.from;
   const payload = {
@@ -74,7 +74,7 @@ router.post('/messages', (req: Request, res: Response) => {
   });
 });
 
-router.post('/messages/:id', (req: Request, res: Response) => {
+router.post('/api/messages/:id', (req: Request, res: Response) => {
   const msg = req.body.msg;
   const from = req.body.from;
   const id = req.params.id;
@@ -94,7 +94,7 @@ router.post('/messages/:id', (req: Request, res: Response) => {
   });
 });
 
-router.get('/users', async (req: Request, res: Response) => {
+router.get('/api/users', async (req: Request, res: Response) => {
   const server = Server.instance;
 
   try {
@@ -116,7 +116,7 @@ router.get('/users', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/users/detail', async (req: Request, res: Response) => {
+router.get('/api/users/detail', async (req: Request, res: Response) => {
   res.json({
     ok: true,
     users: connectedUsers.getList(),
